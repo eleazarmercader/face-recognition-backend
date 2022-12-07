@@ -19,23 +19,23 @@ const image = require('./controllers/image');
 //     }
 //   });
 
-const { Client } = require('pg');
+const { db } = require('pg');
 
-const client = new Client({
+const db = new db({
   connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
   }
 });
 
-client.connect();
+db.connect();
 
-client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+db.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
   if (err) throw err;
   for (let row of res.rows) {
     console.log(JSON.stringify(row));
   }
-  client.end();
+  db.end();
 });
 
 const app = express();
